@@ -1,5 +1,6 @@
 fig:hello
 tab:iris
+fig:hellorr
 intro
 wind
 张老爷子
