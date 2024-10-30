@@ -17,8 +17,56 @@
 把酒对琼楼玉宇，莫孤负天心月到、水面风来。
 
 嘿，玛尼玛尼哄。
+```{r no-warn}
+options(warn=-1)
+```
 
 ```{r hellorr, fig.cap='雷猴啊，散点图！', out.width='90%'}
 par(mar = c(4, 4, 1, .1))
 plot(cars, pch = 19)
+```
+
+```{r ceshi1,echo=FALSE}
+library(ggplot2)
+
+# 示例数据
+data <- data.frame(
+  Date = seq(as.Date("2024-01-01"), as.Date("2024-12-31"), by = "month"),
+  Value = c(30, 35, 36, 34, 32, 33, 34, 35, 36, 37, 38, 39)
+)
+
+# 使用ggplot2绘图
+ggplot(data, aes(x = Date, y = Value)) +
+  geom_col(fill = "#ADD8E6", alpha = 0.5) + # 淡蓝色半透明柱状图
+  geom_line(color = "#FFA500", size = 1.5) + # 使用橙色线条，宽度为1.5
+  geom_point(color = "#FFA500", size = 3) +   # 在每个点上放置橙色点
+  geom_text(aes(label = Value), vjust = -0.5) + # 在柱子上方显示数值
+  labs(title = "年度测量值趋势",
+       x = "日期",
+       y = "测量值") +
+  theme_minimal() +                         # 使用简洁的主题
+  theme(text = element_text(family = "wqy-microhei"), # 设置字体为Arial
+        plot.title = element_text(size = rel(1.5)), # 增大标题的字体大小
+        axis.title.y = element_text(vjust = 1.5), # 调整y轴标题的位置
+        axis.title.x = element_text(vjust = -0.2), # 调整x轴标题的位置
+        panel.grid.minor = element_blank(), # 移除次要网格线
+        axis.text.x = element_text(angle = 45, hjust = 1), # 倾斜标签文字
+        legend.position = "bottom") + # 将图例放在底部
+  scale_color_manual(values = c("#ADD8E6", "#FFA500")) + # 定义颜色
+  guides(color = guide_legend(override.aes = list(size=1.5))) # 自定义图例中的点大小
+```
+```{r ceshi2,echo=FALSE}
+ggplot(data, aes(x = "", y = Value)) +
+  geom_boxplot(fill = "#ADD8E6", color = "#FFA500") +
+  coord_flip() +
+  labs(title = "年度测量值分布", x = "测量值", y = "") +
+  theme_minimal() +                         # 使用简洁的主题
+  theme(text = element_text(family = "wqy-microhei"), # 设置字体为Arial
+        plot.title = element_text(size = rel(1.5)), # 增大标题的字体大小
+        axis.title.y = element_text(vjust = 1.5), # 调整y轴标题的位置
+        axis.title.x = element_text(vjust = -0.2), # 调整x轴标题的位置
+        panel.grid.minor = element_blank(), # 移除次要网格线
+        legend.position = "bottom") + # 将图例放在底部
+  scale_color_manual(values = c("#ADD8E6", "#FFA500")) + # 定义颜色
+  guides(color = guide_legend(override.aes = list(size=1.5))) # 自定义图例中的点大小
 ```

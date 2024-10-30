@@ -1,0 +1,89 @@
+# 地方末 {#wdfdf}
+
+瞎扯几句。
+
+## 张老爷富德子
+```{r no-warn2,echo=FALSE}
+options(warn=-1)
+```
+
+```{r setup69399, echo=FALSE,include=FALSE}
+Sys.setlocale(locale = "zh_CN.UTF-8")
+```
+
+```{r setup693, include=FALSE}
+library(reticulate)
+knitr::knit_engines$set(python = reticulate::eng_python)
+knitr::opts_chunk$set(echo = FALSE)
+use_condaenv('C:/Users/hp440/anaconda3')
+```
+
+```{python}
+
+from sqlalchemy import *
+from sqlalchemy.engine import create_engine
+from sqlalchemy.schema import *
+import pandas as pd
+import warnings
+warnings.filterwarnings("ignore")
+
+# Presto
+args = {'protocol': 'https',
+  'requests_kwargs': {'verify': False},
+  'username':'edw',
+  'password':'edw1qaz'
+}
+
+engine = create_engine('presto://jiangyuebin:jiangyuebin@credithc.com@bigdata-019:8443/hive',connect_args=args)
+#engine = create_engine('presto://jiangyuebin:jiangyuebin@credithc.com@bigdata-126:8443/hive',connect_args=args)
+df = pd.read_sql('''
+select
+company_id,management_id,real_raise_money
+from
+hive.edw_tmp.dwd_ppf_prod_ppf_fund_s
+    WHERE
+    is_del = 0 
+    AND fund_state IN 
+    (
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+    ) 
+    AND 
+    (
+        (
+            system_type = 3
+            AND product_category = 27
+        )
+    )
+      and dt = '2024-07-22'
+''',engine)
+
+result = pd.DataFrame(df)
+#result.columns = ['客户姓名','证件号','渠道','组织架构']
+#print(result.head(5))
+
+
+```
+
+```{r pressure, echo=FALSE}
+aa <- py_to_r(py$result)
+boxplot(as.numeric(aa$real_raise_money))
+```
+
+```{r pressure666, echo=FALSE,message = FALSE}
+# 如果没有安装 knitr 包，可以先安装
+if (!require(knitr)) {
+  install.packages("knitr")
+}
+# 加载 knitr 包
+library(knitr)
+# 将 Python 的结果转换为 R 的 data.frame
+aa <- py_to_r(py$result)
+# 使用 kable 函数来漂亮地格式化输出
+kable(head(aa), format = "html", escape = FALSE, align = "l") # 输出 HTML 表格
+#print(head(aa), row.names = FALSE, quote = FALSE)
+```

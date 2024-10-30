@@ -1,4 +1,10 @@
-`r if (knitr:::is_html_output()) '# 参考文献 {#references .unnumbered}'`
+
+
+```{r echo=FALSE, results='asis'}  
+if (knitr::is_html_output()) {  
+  cat("# 参考文献 {.unnumbered}\n")  
+}
+```
 
 ```{r include=FALSE}
 # 自动生成 R 包的参考文献
